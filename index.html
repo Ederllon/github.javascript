@@ -1,1 +1,43 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub User Info</title>
+</head>
+<body>
+    <h1>GitHub User Info</h1>
+    <label for="usernameInput">Digite o nome de usuário do GitHub:</label>
+    <input type="text" id="usernameInput">
+    <button onclick="buscarUserInfo()">Buscar</button>
+    <div id="userInfo"></div>
+
+    <script>
+        function buscarUserInfo() {
+            const username = document.getElementById('usernameInput').value;
+
+            // Fazendo uma solicitação para a API do GitHub
+            fetch(`https://api.github.com/users/${username}`)
+            .then(response => response.json())
+            .then(data => {
+                const nome = data.name || 'Nome não disponível';
+                const nomeUsuario = data.login;
+                const numRepositorios = data.public_repos;
+                const numSeguidores = data.followers;
+
+                const userInfoElement = document.getElementById('userInfo');
+                userInfoElement.innerHTML = `
+                    <p>Nome: ${nome}</p>
+                    <p>Nome de usuário: ${nomeUsuario}</p>
+                    <p>Número de repositórios públicos: ${numRepositorios}</p>
+                    <p>Número de seguidores: ${numSeguidores}</p>
+                `;
+            })
+            .catch(error => {
+                console.error('Ocorreu um erro ao buscar as informações do usuário:', error);
+            });
+        }
+    </script>
+</body>
+</html>
